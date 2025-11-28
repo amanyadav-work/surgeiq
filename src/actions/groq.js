@@ -1,6 +1,7 @@
 'use server';
 
 import Groq from 'groq-sdk';
+import { dbConnect, SurgePrediction } from '@/lib/mongoose';
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -8,10 +9,37 @@ const groq = new Groq({
 
 export async function GenerateAiDataGroq(
   messages,
-  systemPrompt = `You are a supportive and professional AI career coach. Speak like a friendly mentor...`,
+  systemPrompt = `You are a supportive and professional AI prediction system. Speak like a friendly mentor...`,
   image,
   ignoreFormat = false,
+  phase = null // new param for phase
 ) {
+  await dbConnect();
+
+  // Determine phase from dummy data (first and last date)
+  if (!phase && messages && messages[0]?.content) {
+    const match = messages[0].content.match(/\| (\d{4}-\d{2}-\d{2}) \|.*\| (\d{4}-\d{2}-\d{2}) \|/s);
+    if (match) {
+      phase = `${match[1]}_to_${match[2]}`;
+    } else {
+      // fallback: try to extract first and last date from table
+      const dates = Array.from(messages[0].content.matchAll(/\| (\d{4}-\d{2}-\d{2}) \|/g)).map(m => m[1]);
+      if (dates.length > 1) phase = `${dates[0]}_to_${dates[dates.length-1]}`;
+      else phase = 'unknown_phase';
+    }
+  }
+
+  // Check if prediction exists for this phase
+  const existing = await SurgePrediction.findOne({ phase });
+  if (existing) {
+    return {
+      predictions: existing.predictions,
+      surge_days: existing.surge_days,
+      phase: existing.phase,
+      fromCache: true
+    };
+  }
+
   if (!Array.isArray(messages)) {
     throw new Error('Invalid input: messages must be an array.');
   }
@@ -41,9 +69,17 @@ export async function GenerateAiDataGroq(
       stream: false,
     });
 
-     const raw = completion.choices[0].message.content.trim();
-    const parsed = parseAiJsonResponse(raw,ignoreFormat);
-    return parsed;
+    const raw = completion.choices[0].message.content.trim();
+    const parsed = await parseAiJsonResponse(raw, ignoreFormat);
+
+    // Store in DB
+    await SurgePrediction.create({
+      phase,
+      predictions: parsed.predictions || [],
+      surge_days: parsed.surge_days || []
+    });
+
+    return { ...parsed, phase, fromCache: false };
   } catch (error) {
     console.error('[GROQ AI ERROR]', error);
     throw new Error('Failed to generate or parse response.');
