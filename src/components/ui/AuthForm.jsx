@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -211,7 +212,7 @@ export function AuthForm({ className, pathname = 'login', ...props }) {
 
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/job-banner.png"
+              src="https://www.shutterstock.com/image-vector/female-doctor-physician-young-woman-600nw-2589174555.jpg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
