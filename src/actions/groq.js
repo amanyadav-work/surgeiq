@@ -31,7 +31,7 @@ export async function GenerateAiDataGroq(
 
   // Check if prediction exists for this phase
   const existing = await SurgePrediction.findOne({ phase });
-  if (existing) {
+  if (!existing) {
     return {
       predictions: existing.predictions,
       surge_days: existing.surge_days,
