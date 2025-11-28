@@ -1,7 +1,12 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-  reactCompiler: true,
+    async rewrites() {
+        return [
+            {
+                source: '/api/auth/:path*',
+                destination: `${process.env.AUTH_SERVICE_URL}/:path*`,
+            },
+        ];
+    }
 };
 
 export default nextConfig;
