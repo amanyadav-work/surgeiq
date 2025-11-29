@@ -13,7 +13,7 @@ export default function PredictionTable({ data }) {
         <div className="overflow-x-auto">
           <table className="min-w-full text-sm border">
             <thead>
-              <tr className="bg-muted">
+              <tr className="bg-muted text-black">
                 <th className="px-2 py-1 border">Date</th>
                 <th className="px-2 py-1 border">Patients</th>
                 <th className="px-2 py-1 border">Surge</th>

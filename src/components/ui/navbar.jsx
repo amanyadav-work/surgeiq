@@ -26,10 +26,8 @@ export default function Navbar() {
             >
                 <Link href="#top">
                     <img
-                        className="h-9 w-auto"
-                        src="/assets/logo.svg"
-                        width={138}
-                        height={36}
+                        src="/download.png"
+                        className="size-15"
                         alt="logo"
                     />
                 </Link>

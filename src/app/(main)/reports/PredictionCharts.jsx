@@ -93,14 +93,14 @@ export default function PredictionCharts({ data }) {
           <ReactECharts option={surgeChart} style={{ height: 300 }} />
         </CardContent>
       </Card>
-      <Card className="md:col-span-2">
+      {/* <Card className="md:col-span-2">
         <CardHeader>
           <CardTitle>AQI & Temperature</CardTitle>
         </CardHeader>
         <CardContent>
           <ReactECharts option={envChart} style={{ height: 300 }} />
         </CardContent>
-      </Card>
+      </Card> */}
       <Card className="md:col-span-2">
         <CardHeader>
           <CardTitle>Prediction Note</CardTitle>

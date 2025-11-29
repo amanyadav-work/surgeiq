@@ -60,6 +60,6 @@ export async function middleware(req) {
 
 export const config = {
     matcher: [
-        '/((?!_next/.*|favicon\\.ico|manifest\\.json|robots\\.txt|service-worker\\.js|.*\\.(?:png|svg|jpg|jpeg|gif|webp|ico|bmp|tiff|avif|webmanifest|json)).*)',
+        '/((?!_next/.*|favicon\\.ico|manifest\\.json|robots\\.txt|service-worker\\.js|.*\\.(?:png|svg|jpg|jpeg|gif|webp|ico|bmp|tiff|avif|webmanifest|json|woff|woff2|eot|ttf|otf)).*)',
     ],
 };
