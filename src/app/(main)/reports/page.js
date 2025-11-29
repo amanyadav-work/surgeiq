@@ -172,7 +172,7 @@ Return your answer in the following JSON format, and ONLY reply with the JSON ob
     <div className="p-8">
       <h2 className="text-xl text-black font-bold mb-4">Surge Prediction Report</h2>
       {loading && (
-        <Loader />
+        <Loader color='blue' className='h-full' />
       )}
       {result && !result.error && (
         <>
@@ -205,6 +205,9 @@ Return your answer in the following JSON format, and ONLY reply with the JSON ob
       {result && result.error && (
         <div className="text-red-500">{result.error}</div>
       )}
+      {!result && !loading && <>
+        No data available, please add records
+      </>}
     </div>
   );
 };
